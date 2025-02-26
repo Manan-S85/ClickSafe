@@ -1,0 +1,66 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import "tailwindcss/tailwind.css";
+
+export default function Home() {
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState(null);
+
+  const handleDetection = () => {
+    // Mock API response (replace with actual API call)
+    const mockResult = input.toLowerCase().includes("scam") ? "Fraud Detected" : "Safe";
+    setResult(mockResult);
+  };
+
+  return (
+    <div className="relative min-h-screen flex flex-col items-center justify-center bg-black text-white">
+      {/* Animated Background */}
+      <div className="absolute inset-0 -z-10 opacity-50">
+        <img src="/animated-bg.gif" alt="Animated Background" className="w-full h-full object-cover" />
+      </div>
+      
+      {/* Title */}
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="text-4xl font-bold mb-6"
+      >
+        Fraud App & Clickbait Detection
+      </motion.h1>
+
+      {/* Input Section */}
+      <Card className="bg-white bg-opacity-10 p-6 rounded-2xl shadow-lg">
+        <CardContent className="flex flex-col gap-4">
+          <Input
+            type="text"
+            placeholder="Enter app name or review..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="p-3 rounded-lg text-black"
+          />
+          <Button onClick={handleDetection} className="bg-blue-500 hover:bg-blue-600">
+            Analyze
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Result Display */}
+      {result && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className={`mt-6 px-6 py-3 rounded-lg text-lg font-semibold ${
+            result === "Fraud Detected" ? "bg-red-500" : "bg-green-500"
+          }`}
+        >
+          {result}
+        </motion.div>
+      )}
+    </div>
+  );
+}
